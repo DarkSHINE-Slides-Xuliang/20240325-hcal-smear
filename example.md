@@ -10,7 +10,7 @@ authors:  # First author should be the presenter
   - Second Author: ["Institution 3"]
   - Third Author: ["Institution 1", "Institution 3"] 
 
-meeting: "presentation meeting"
+meeting: "Dark SHINE Simulation and Analysis Meeting"
 preTitle: "An Example Title"
 ---
 
