@@ -25,7 +25,7 @@ dx=(xmax-xmin)/nbin
 
 fig = go.Figure()
 for varname in varnames:
-    histo = rdf.Filter("HCAL_E_Max_Cell_truth>0").Histo1D((varname, varname, nbin+2, xmin-1.5 * dx, xmax + 0.5*dx), varname)
+    histo = rdf.Filter(f"{varname}>0").Histo1D((varname, varname, nbin+2, xmin-1.5 * dx, xmax + 0.5*dx), varname)
     if histo.Integral("width") > 0:
            histo.Scale(1/histo.Integral("width"))
     # Plot Root

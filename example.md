@@ -116,9 +116,9 @@ layout: pageBar
 
 # HCAL E Max Cell after smearing
 
-<div grid="~ cols-[700px_1fr] gap-20">
+<div grid="~ cols-[650px_1fr] gap-20">
 
-<Transform :scale="0.9">
+<Transform :scale="0.85">
 <PlotlyGraph filePath="plot/['HCAL_E_Max_Cell_truth', 'HCAL_E_Max_Cell_smear'].json" tickFontSize="18" graphWidth="800"/>
 </Transform>
 
@@ -126,11 +126,9 @@ layout: pageBar
 
 <br><br>
 
-Two peaks in the <font color="red">smeared HCAL E<sub>Max Cell</sub></font>.
+Peak is larger for <font color="red">smeared HCAL E<sub>Max Cell</sub> (0.6 MeV)</font>.
 
-The first peak came from the smeared energy cannot be less than 0.
-
-This peak cannot be removed in the cut flow.
+The background rejection is larger if use constant $\sigma$.
 
 </div>
 
