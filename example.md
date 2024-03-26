@@ -6,12 +6,12 @@ transition: slide-left
 mdc: true
 backgroud: '/ATLAS/ATLAS-Logo.png'
 authors:  # First author should be the presenter
-  - First Author: ["Institution 1", "Institution 2"]
-  - Second Author: ["Institution 3"]
-  - Third Author: ["Institution 1", "Institution 3"] 
+  - Xuliang Zhu: ["TDLI"]
+  - Tong Sun: ["TDLI"]
+  - Rui Yuan: ["TDLI"] 
 
 meeting: "Dark SHINE Simulation and Analysis Meeting"
-preTitle: "An Example Title"
+preTitle: "DAna HCAL Smearing etc."
 ---
 
 <br>
@@ -34,6 +34,27 @@ layout: pageBar
 hideInToc: true
 ---
 
+# Minutes
+
+<br>
+
+### 4GeV Sample
+
+| Type | $m_{A'}$ (MeV) | Event Number | Directory |
+| --- | --- | --- | --- |
+| Inclusive | - |  $1\times 10^{7}$ | <small>`/lustre/collider/hepmc/DarkSHINE_Production/Baseline_1/4GeV/4GeV_noOptical_Oct18_ana_1.root`</small> |
+| Signal | 1, 10, 100, 1000 | $1\times 10^{5}$ per $m_{A'}$ | <font color="orange">Running</font> |
+
+Using environment and geometry setup from tag `baseline1`, with 1.5T uniform magnetic field.
+
+Signal LUT: `/home/suntong/lustre/makeLUT/lhe_to_LUT/build/signal_4GeV_LUT.root`
+
+---
+layout: pageBar
+hideInToc: true
+---
+
+
 # Outline
 
 <br>
@@ -48,152 +69,93 @@ hideInToc: true
 layout: pageBar
 ---
 
-# What is Slidev?
-
-Slidev is a slides maker and presenter designed for developers, consist of the following features
-
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - theme can be shared and used with npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embedding Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export into PDF, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - anything possible on a webpage
+# HCAL Smearing Stratagy
 
 <br>
+
+The smearing of HCAL/SideHCAL is done in reconstruction level. For each HCAL/SideHCAL Cell, the energy of hits are summed, then Landau ditribution is used to do the smearing.
+
+$$
+\sigma = A\sqrt{E} + BE + C
+$$
+
+Currently, constant $\sigma$ is used.
+
+| | $A (\sqrt{\text{MeV}})$ | $B$ | $C (\text{MeV})$ |
+| --- | --- | --- | --- |
+| HCAL 513 | 0 | 0 | 0.1953 |
+
+---
+layout: pageBar
+---
+
+# Validation: HCAL Cell Energy
+
 <br>
 
-Read more about [Why Slidev?](https://sli.dev/guide/why)
+Fig. 1: Distribution of Smeared HCAL E<sub>Cell</sub> vs Truth HCAL E<sub>Cell</sub>. ( Normalized for each bin of truth HCAL E<sub>Cell</sub>). Same $\sigma$ for all cell energy.
+
+Fig. 2: Smeared HCAL $\Delta{E}$ vs Landau distribution. Match with each other.
+
+
+<div grid="~ cols-[450px_1fr] gap-20">
+
+<Transform :scale="0.6">
+<PlotlyGraph filePath="plot/HCAL_E_Cell_truth_HCAL_E_Cell_smear.json" tickFontSize="18" graphWidth="800"/>
+</Transform>
+
+<Transform :scale="0.7">
+<PlotlyGraph filePath="plot/delta_HCAL_E_Cell_gt1_gt1.json" tickFontSize="18" graphWidth="800"/>
+</Transform>
+
+</div>
 
 ---
 layout: pageBar
 ---
 
-# Navigation
+# HCAL E Max Cell after smearing
 
-Hover on the bottom-left corner to see the navigation's controls panel
+<div grid="~ cols-[700px_1fr] gap-20">
 
-## Keyboard Shortcuts
+<Transform :scale="0.9">
+<PlotlyGraph filePath="plot/['HCAL_E_Max_Cell_truth', 'HCAL_E_Max_Cell_smear'].json" tickFontSize="18" graphWidth="800"/>
+</Transform>
 
-|     |     |
-| --- | --- |
-| <kbd>space</kbd> / <kbd>tab</kbd> / <kbd>right</kbd> | next animation or slide |
-| <kbd>left</kbd>  / <kbd>shift</kbd><kbd>space</kbd> | previous animation or slide |
-| <kbd>up</kbd> | previous slide |
-| <kbd>down</kbd> | next slide |
+<div>
+
+<br><br>
+
+Two peaks in the <font color="red">smeared HCAL E<sub>Max Cell</sub></font>.
+
+The first peak came from the smeared energy cannot be less than 0.
+
+This peak cannot be removed in the cut flow.
+
+</div>
+
+</div>
 
 ---
 layout: pageBar
 ---
 
-# The Lagrangian
+# TO-DO List
 
-The mathematical formulation of the Standard Model of particle physics
+<br>
 
-
-The Standard Model of particle physics is a **quantum field theory**. 
-Therefore, its <span style="color:#ac1944;">fundamental elements are quantum fields</span> and the excitations of these fields are *identified* as **particles**.
-All information is encoded in a compact description—the so-called ‘Lagrangian’ ( $\mathcal{L}$ ), which is an extremely compact notation.
-
-In the physics classroom, however, it is very difficult to achieve a deep-level understanding because the required mathematics skills go far beyond high-school level. Hence, we will only treat the ultra-short Lagrangian as below:
-$$
-\mathcal{L} = \color{#9d6fa5}{ -\frac{1}{4} F_{\mu\nu} F^{\mu\nu} } 
-              + \color{#c90024}{ i\bar{\psi} {\mathcal{D}}\!\!\!\!/ \psi }
-              + \mathrm{h.c.} 
-              + \color{#296b4c}{ \psi_i y_{ij} \psi_j \phi }
-              + \mathrm{h.c.} 
-              + \color{#4d45cc}{ |\mathcal{D}_{\mu} \phi |{ }^2 }
-              - \color{#fe7b26}{ V(\phi) }
-$$
-
-<div class="grid grid-cols-3 gap-5 items-center justify-center">
-
-<div class="col-span-2">
-
-> - <span style="color: #9d6fa5"> $F_{\mu\nu} F^{\mu\nu}$: This term is the scalar product of the field strength tensor $F_{\mu\nu}$ containing the mathematical encoding of all interaction particles except the Higgs boson. It contains the necessary formulation for these particles to even exist, and describes how they interact with each other. </span>
-> - <span style="color: #c90024"> $i\bar{\psi} {\mathcal{D}}\!\!\!\!/ \psi$: This term describes how interaction particles interact with matter particles. The fields $\psi$ and $\bar{\psi}$ describe (anti)quarks and (anti)leptons. </span>
-> - <span style="color: #296b4c"> $\psi_i y_{ij} \psi_j \phi$: This term describes how matter particles couple to the Brout–Englert–Higgs field $\psi$ and thereby obtain mass. </span>
-> - <span style="color: #4d45cc"> $|\mathcal{D}_{\mu} \phi |{ }^2$: This term describes how the interaction particles couple to the BEH field. This applies only to the interaction particles of the weak interaction ($W^{\pm}, Z$), which thereby obtain their mass. </span>
-> - <span style="color: #fe7b26"> $V(\phi)$: This term describes the potential of the BEH field.  </span>
-
-</div>
-<div class="col-span-1">
-
-<Transform :scale="1.0">
-<img src="https://www.quantumdiaries.org/wp-content/uploads/2011/06/cernmug.jpg"/>
-</Transform>
-
-</div>
-
-</div>
-
-<style scoped>
-.slidev-layout blockquote {
-  font-size: 1rem;
-}
-
-li {
-  margin-top: 0.25rem;
-  margin-bottom: 0.25rem;
-}
-
-</style>
-
----
-layout: pageBar
----
-
-# 2-D Plotly Examples
-
-Two 2D plots for display
-
-Try to interact with the graphs 🥰
-
-<div grid="~ cols-2 gap-20">
-
-<Transform :scale="0.75">
-<PlotlyGraph filePath="Graph/plotly1.json" tickFontSize="18" graphWidth="800"/>
-</Transform>
-
-<Transform :scale="0.75">
-<PlotlyGraph filePath="Graph/plotly1.json" tickFontSize="18" graphWidth="800"/>
-</Transform>
-
-</div>
-
-
----
-layout: pageBar
----
-
-# 3-D Plotly Examples
-
-Two 3D plots for display
-
-Try to interact with the graphs 🥰
-
-<div grid="~ cols-2 gap-20">
-
-<Transform :scale="0.65">
-<PlotlyGraph filePath="Graph/plotly2.json" graphWidth="900"/>
-</Transform>
-
-<Transform :scale="0.65">
-<PlotlyGraph filePath="Graph/plotly3.json" graphWidth="900"/>
-</Transform>
-
-</div>
-
+- ### DAna:
+    - #### Acts performance, Uniform magnetic filed & Truth seeding (~ 2days)
+    - #### Acts performance, Non-uniform magnetic filed & Truth seeding (~ +2days)
+- ### Baseline 1.6: Filter efficiency
 
 ---
 layout: center
 class: "text-center"
+hideInToc: true
 ---
 
-# Learn More
-
-[Documentations](https://sli.dev) / [GitHub Repo](https://github.com/slidevjs/slidev)
-
+# Thanks
 
 ---
 layout: pageBar
